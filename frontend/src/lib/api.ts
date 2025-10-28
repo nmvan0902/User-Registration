@@ -5,6 +5,7 @@ type ApiSuccess<T> = { success: true; data: T };
 async function fetchJson<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
@@ -55,4 +56,16 @@ export async function logoutUser(): Promise<{ success: true; data: string } | { 
   return fetchJson('/user/logout', {
     method: 'POST',
   });
+}
+
+// New JWT-based endpoints (optional usage)
+export async function loginUserJwt(payload: LoginPayload): Promise<{ success: true; data: { user: UserDTO; accessToken: string } }> {
+  return fetchJson('/user/login-jwt', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function refreshAccessToken(): Promise<{ success: true; data: { accessToken: string } }> {
+  return fetchJson('/user/refresh', { method: 'POST' });
 }

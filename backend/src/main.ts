@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   dotenv.config();
@@ -11,6 +12,8 @@ async function bootstrap() {
     origin: process.env.FRONTEND_ORIGIN || true,
     credentials: true,
   });
+
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({

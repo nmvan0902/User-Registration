@@ -1,10 +1,18 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import { Button } from './components/ui/button';
+import { useAuth } from './lib/auth';
 
 function App() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate('/');
+  }
   return (
     <>
       {/* Navigation */}
@@ -13,14 +21,21 @@ function App() {
           <Link to="/" className="font-bold">
             Auth App (shadcn + Sonner)
           </Link>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" asChild>
-              <Link to="/login">Login</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/signup">Sign Up</Link>
-            </Button>
-          </div>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-muted-foreground hidden sm:inline">{user.email}</span>
+              <Button variant="outline" onClick={handleLogout}>Logout</Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" asChild>
+                <Link to="/login">Login</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/signup">Sign Up</Link>
+              </Button>
+            </div>
+          )}
         </nav>
       </header>
 

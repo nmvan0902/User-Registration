@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Loader2, Lock, Mail } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../lib/auth';
 
 // Import các component của shadcn/ui
 import { Button } from '../components/ui/button';
@@ -34,6 +35,7 @@ type LoginFormData = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,6 +50,7 @@ const LoginPage = () => {
       return loginUser(values);
     },
     onSuccess: (res) => {
+      setUser({ _id: res.data._id, email: res.data.email, createdAt: res.data.createdAt });
       toast.success('Đăng nhập thành công', {
         description: `Chào mừng ${res.data.email}`,
       });
