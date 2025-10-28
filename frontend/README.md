@@ -1,6 +1,8 @@
 # Frontend
 
-This React + Vite app integrates with the NestJS backend at http://localhost:3000.
+This React + Vite app integrates with the NestJS backend.
+
+Default backend URL: https://user-registration-taupe-seven.vercel.app
 
 ## UI/Theme
 
@@ -10,7 +12,7 @@ This React + Vite app integrates with the NestJS backend at http://localhost:300
 
 ## Configure API base URL
 
-By default, the app calls the backend at http://localhost:3000. You can override via Vite env:
+By default, the app calls the deployed backend above. You can override via Vite env (e.g., for local dev):
 
 Create a `.env` file in the `frontend` folder (optional):
 
