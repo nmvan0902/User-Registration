@@ -1,3 +1,40 @@
+# Frontend
+
+This React + Vite app integrates with the NestJS backend at http://localhost:3000.
+
+## UI/Theme
+
+- Light mode is enforced globally (no automatic dark mode) via `src/index.css`.
+- Layout is full-width; the top navigation no longer uses Tailwind's `container` (see `src/App.tsx`).
+- Theme tokens (CSS variables like `--background`, `--foreground`) drive colors across components.
+
+## Configure API base URL
+
+By default, the app calls the backend at http://localhost:3000. You can override via Vite env:
+
+Create a `.env` file in the `frontend` folder (optional):
+
+```
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+## Endpoints used
+
+- POST `/user/register`
+- POST `/user/login`
+
+## Run locally
+
+1. Start the backend in another terminal.
+2. Start the frontend dev server:
+
+```powershell
+npm install
+npm run dev
+```
+
+The app runs at http://localhost:5173.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

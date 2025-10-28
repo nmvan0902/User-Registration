@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Import các component của shadcn/ui
 import { Button } from '../components/ui/button';
@@ -31,6 +32,7 @@ const formSchema = z.object({
 type LoginFormData = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,24 +43,28 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: async (values: LoginFormData) => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      return values;
+      const { loginUser } = await import('../lib/api');
+      return loginUser(values);
     },
-    onSuccess: (data) => {
-      toast.success('Đăng nhập thành công (Mô phỏng)', {
-        description: `Chào mừng ${data.email}`,
+    onSuccess: (res) => {
+      toast.success('Đăng nhập thành công', {
+        description: `Chào mừng ${res.data.email}`,
+      });
+      setTimeout(() => navigate('/'), 1200);
+    },
+    onError: (error) => {
+      toast.error('Đăng nhập thất bại', {
+        description: (error as Error).message || 'Vui lòng kiểm tra lại thông tin.',
       });
     },
   });
 
   function onSubmit(values: LoginFormData) {
-    console.log('Dữ liệu đăng nhập:', values);
     loginMutation.mutate(values);
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md mx-auto shadow-lg border border-border/60 hover:shadow-xl transition-shadow">
       <CardHeader>
         <CardTitle className="text-2xl">Đăng Nhập</CardTitle>
         <CardDescription>
@@ -97,6 +103,12 @@ const LoginPage = () => {
             <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
               {loginMutation.isPending ? 'Đang đăng nhập...' : 'Đăng Nhập'}
             </Button>
+            <p className="text-sm text-muted-foreground text-center">
+              Chưa có tài khoản?{' '}
+              <Link to="/signup" className="text-primary underline-offset-4 hover:underline">
+                Đăng ký ngay
+              </Link>
+            </p>
           </form>
         </Form>
       </CardContent>

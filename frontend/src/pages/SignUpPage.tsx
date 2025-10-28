@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -36,23 +36,8 @@ const formSchema = z.object({
 
 type SignUpFormData = z.infer<typeof formSchema>;
 
-// 2. Hàm gọi API (Giả lập)
-const registerUser = async (data: SignUpFormData) => {
-  // const response = await axios.post('/user/register', data);
-  // return response.data;
-  
-  // Giả lập
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (data.email === 'error@example.com') {
-        reject(new Error('Email này đã được sử dụng.'));
-      } else {
-        console.log('Đăng ký:', data);
-        resolve({ message: 'Đăng ký thành công!' });
-      }
-    }, 1500);
-  });
-};
+// 2. Hàm gọi API thực tế
+import { registerUser } from '../lib/api';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -88,7 +73,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-md mx-auto shadow-lg border border-border/60 hover:shadow-xl transition-shadow">
       <CardHeader>
         <CardTitle className="text-2xl">Đăng Ký</CardTitle>
         <CardDescription>
@@ -127,6 +112,12 @@ const SignUpPage = () => {
             <Button type="submit" className="w-full" disabled={mutation.isPending}>
               {mutation.isPending ? 'Đang xử lý...' : 'Tạo tài khoản'}
             </Button>
+            <p className="text-sm text-muted-foreground text-center">
+              Đã có tài khoản?{' '}
+              <Link to="/login" className="text-primary underline-offset-4 hover:underline">
+                Đăng nhập
+              </Link>
+            </p>
           </form>
         </Form>
       </CardContent>
