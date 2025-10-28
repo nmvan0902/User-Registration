@@ -18,4 +18,10 @@ export class UserController {
     const user = await this.userService.login(dto);
     return { success: true, data: user };
   }
+
+  // Stateless logout endpoint (no server session). Frontend can clear client storage.
+  @Post('logout')
+  async logout() {
+    return { success: true, data: 'Logged out' };
+  }
 }

@@ -49,3 +49,10 @@ export async function loginUser(payload: LoginPayload): Promise<ApiSuccess<UserD
     body: JSON.stringify(payload),
   });
 }
+
+export async function logoutUser(): Promise<{ success: true; data: string } | { success: true; data: null }> {
+  // Backend is stateless, so this is a no-op server-side; frontend should clear any client storage.
+  return fetchJson('/user/logout', {
+    method: 'POST',
+  });
+}

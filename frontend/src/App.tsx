@@ -25,7 +25,7 @@ function App() {
       </header>
 
       {/* Page Content */}
-      <main className="min-h-[calc(100vh-3.5rem)] mt-12 px-4 flex items-center justify-center">
+      <main className="relative overflow-hidden min-h-[calc(100vh-3.5rem)] mt-12 px-4 flex items-center justify-center bg-linear-to-b from-accent/10 to-background">
         <div className="w-full flex items-center justify-center">
           <Routes>
             <Route path="/" element={<HomePage />} />

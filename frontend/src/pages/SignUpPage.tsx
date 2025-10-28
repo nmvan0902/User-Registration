@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner'; // <-- 1. Import toast từ sonner
+import { Loader2, Mail, UserPlus } from 'lucide-react';
 
 // Import các component của shadcn/ui
 import { Button } from '../components/ui/button';
@@ -74,7 +75,10 @@ const SignUpPage = () => {
 
   return (
     <Card className="w-full max-w-md mx-auto shadow-lg border border-border/60 hover:shadow-xl transition-shadow">
-      <CardHeader>
+      <CardHeader className="space-y-2">
+        <div className="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+          <UserPlus className="size-5" />
+        </div>
         <CardTitle className="text-2xl">Đăng Ký</CardTitle>
         <CardDescription>
           Nhập email và mật khẩu của bạn để tạo tài khoản.
@@ -90,7 +94,10 @@ const SignUpPage = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="name@example.com" {...field} />
+                    <div className="relative">
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                      <Input className="pl-9" placeholder="name@example.com" {...field} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,8 +117,15 @@ const SignUpPage = () => {
               )}
             />
             <Button type="submit" className="w-full" disabled={mutation.isPending}>
-              {mutation.isPending ? 'Đang xử lý...' : 'Tạo tài khoản'}
+              {mutation.isPending ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="size-4 animate-spin" /> Đang xử lý...
+                </span>
+              ) : (
+                'Tạo tài khoản'
+              )}
             </Button>
+            {/* Social signup removed as requested */}
             <p className="text-sm text-muted-foreground text-center">
               Đã có tài khoản?{' '}
               <Link to="/login" className="text-primary underline-offset-4 hover:underline">
