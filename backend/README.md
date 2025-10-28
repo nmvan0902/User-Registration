@@ -50,6 +50,14 @@ The server will start on `http://localhost:3000` by default.
     - `409 Conflict` if email already registered
     - `500 Internal Server Error` for unexpected failures
 
+- POST `/user/login`
+  - Body: `{ "email": string, "password": string (>= 8 chars) }`
+  - Success: `200 OK` with `{ success: true, data: { _id, email, createdAt } }`
+  - Errors:
+    - `400 Bad Request` for validation errors
+    - `401 Unauthorized` if email or password is incorrect
+    - `500 Internal Server Error` for unexpected failures
+
 ## Notes
 
 - Passwords are never returned in responses.

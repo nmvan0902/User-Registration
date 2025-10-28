@@ -1,8 +1,9 @@
-import { Injectable, ConflictException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, ConflictException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -36,5 +37,21 @@ export class UserService {
       }
       throw new InternalServerErrorException('Failed to create user');
     }
+  }
+
+  async login(dto: LoginDto): Promise<Omit<User, 'password'>> {
+    const user = await this.findByEmail(dto.email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isMatch = await bcrypt.compare(dto.password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const obj = user.toObject() as any;
+    delete obj.password;
+    return obj as Omit<User, 'password'>;
   }
 }
