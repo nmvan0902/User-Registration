@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useState } from 'react';
-import { toast } from 'sonner'; // <-- 1. Import toast từ sonner
+import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query';
 
 // Import các component của shadcn/ui
 import { Button } from '../components/ui/button';
@@ -31,9 +31,6 @@ const formSchema = z.object({
 type LoginFormData = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  // 2. Không cần hook useToast()
-
   const form = useForm<LoginFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,17 +39,22 @@ const LoginPage = () => {
     },
   });
 
+  const loginMutation = useMutation({
+    mutationFn: async (values: LoginFormData) => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      return values;
+    },
+    onSuccess: (data) => {
+      toast.success('Đăng nhập thành công (Mô phỏng)', {
+        description: `Chào mừng ${data.email}`,
+      });
+    },
+  });
+
   function onSubmit(values: LoginFormData) {
     console.log('Dữ liệu đăng nhập:', values);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      // 3. Gọi toast.success() trực tiếp
-      toast.success('Đăng nhập thành công (Mô phỏng)', {
-        description: `Chào mừng ${values.email}`,
-      });
-    }, 1500);
+    loginMutation.mutate(values);
   }
 
   return (
@@ -92,8 +94,8 @@ const LoginPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Đang đăng nhập...' : 'Đăng Nhập'}
+            <Button type="submit" className="w-full" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? 'Đang đăng nhập...' : 'Đăng Nhập'}
             </Button>
           </form>
         </Form>

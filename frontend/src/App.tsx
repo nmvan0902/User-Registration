@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
         <nav className="container h-14 max-w-screen-2xl mx-auto flex items-center justify-between px-4">
           <Link to="/" className="font-bold">
             Auth App (shadcn + Sonner)
@@ -25,8 +25,8 @@ function App() {
       </header>
 
       {/* Page Content */}
-      <main className="container max-w-screen-lg mx-auto mt-12 px-4">
-        <div className="flex justify-center">
+      <main className="min-h-[calc(100vh-3.5rem)] mt-12 px-4 flex items-center justify-center">
+        <div className="w-full">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />

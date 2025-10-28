@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="min-h-screen bg-background font-sans antialiased">
+        <div className="min-h-screen bg-background font-sans antialiased w-full min-w-full">
           <App />
         </div>
         {/* 2. Thêm Toaster ở đây (nó sẽ tự động hiển thị) */}

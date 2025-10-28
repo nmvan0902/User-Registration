@@ -124,8 +124,8 @@ const SignUpPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={mutation.isLoading}>
-              {mutation.isLoading ? 'Đang xử lý...' : 'Tạo tài khoản'}
+            <Button type="submit" className="w-full" disabled={mutation.isPending}>
+              {mutation.isPending ? 'Đang xử lý...' : 'Tạo tài khoản'}
             </Button>
           </form>
         </Form>
